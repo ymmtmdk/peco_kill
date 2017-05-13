@@ -1,5 +1,10 @@
 function peco_kill
-  ps ax -o pid,time,command | peco --query "$LBUFFER" | awk '{print $1}' | read pid
+  set -l flags --layout bottom-up
+  if test -n $argv
+    set flags --query "$argv" $flags
+  end
+
+  ps ax -o pid,time,command | peco $flags | awk '{print $1}' | read pid
   commandline "kill $pid"
 end
 
